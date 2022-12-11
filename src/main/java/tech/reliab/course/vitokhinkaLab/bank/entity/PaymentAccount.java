@@ -1,8 +1,11 @@
 package tech.reliab.course.vitokhinkaLab.bank.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class PaymentAccount {
     Long id;
     User user;
+    @JsonIgnore
     Bank bank;
     double sum;
 
@@ -22,12 +25,12 @@ public class PaymentAccount {
         this.sum = paymentAccount.getSum();
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public User getUser() {
@@ -53,6 +56,7 @@ public class PaymentAccount {
     public void setSum(double sum) {
         this.sum = sum;
     }
+
     @Override
     public String toString() {
         return "PaymentAccount{" +

@@ -1,22 +1,29 @@
 package tech.reliab.course.vitokhinkaLab.bank.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import tech.reliab.course.vitokhinkaLab.bank.entity.parentClasses.Person;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User extends Person {
     String job;
     double salary;
-    ArrayList<Bank> banks = new ArrayList<>();
+    @JsonIgnore
+    List<Bank> banks = new ArrayList<>();
+    @JsonIgnore
+    List<CreditAccount> creditAccounts = new ArrayList<>();
+    @JsonIgnore
+    List<PaymentAccount> paymentAccounts = new ArrayList<>();
     double creditRating;
-    ArrayList<PaymentAccount> paymentAccounts = new ArrayList<PaymentAccount>();
-    ArrayList<CreditAccount> creditAccounts = new ArrayList<CreditAccount>();
 
     public User() {}
 
     public User(Long id, String firstName, String lastName, LocalDate birthDate, String job,
-                double salary,double creditRating) {
+                double salary, double creditRating) {
         super(id, firstName, lastName, birthDate);
         this.job = job;
         this.salary = salary;
@@ -42,6 +49,15 @@ public class User extends Person {
         this.banks = user.getBanks();
         this.creditRating = user.getCreditRating();
     }
+
+    public void addPaymentAccount(PaymentAccount paymentAccount){
+        this.paymentAccounts.add(paymentAccount);
+    }
+
+    public void addCreditAccount(CreditAccount creditAccount){
+        this.creditAccounts.add(creditAccount);
+    }
+
     public String getJob() {
         return job;
     }
@@ -58,7 +74,7 @@ public class User extends Person {
         this.salary = salary;
     }
 
-    public ArrayList<Bank> getBanks() {
+    public List<Bank> getBanks() {
         return banks;
     }
 
@@ -74,23 +90,23 @@ public class User extends Person {
         this.creditRating = creditRating;
     }
 
-    public void setBanks(ArrayList<Bank> banks) {
+    public void setBanks(List<Bank> banks) {
         this.banks = banks;
     }
 
-    public ArrayList<CreditAccount> getCreditAccounts() {
+    public List<CreditAccount> getCreditAccounts() {
         return creditAccounts;
     }
 
-    public void setCreditAccounts(ArrayList<CreditAccount> creditAccounts) {
+    public void setCreditAccounts(List<CreditAccount> creditAccounts) {
         this.creditAccounts = creditAccounts;
     }
 
-    public ArrayList<PaymentAccount> getPaymentAccounts() {
+    public List<PaymentAccount> getPaymentAccounts() {
         return paymentAccounts;
     }
 
-    public void setPaymentAccounts(ArrayList<PaymentAccount> paymentAccounts) {
+    public void setPaymentAccounts(List<PaymentAccount> paymentAccounts) {
         this.paymentAccounts = paymentAccounts;
     }
 
@@ -98,11 +114,10 @@ public class User extends Person {
     public String toString() {
         return "User{" +
                 "id=" + super.getId() +
-                ", fullName='" + super.getFullName() + '\'' +
                 ", birthDate=" + super.getBirthDate() +
                 ", job='" + job + '\'' +
                 ", salary=" + salary +
-                ", bank_id=" + banks.stream().map(Bank::getName).toList() +
+                ", banks=" + banks.stream().map(Bank::getName).toList() +
                 ", creditRating=" + creditRating +
                 '}';
     }

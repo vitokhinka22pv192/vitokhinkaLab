@@ -5,11 +5,14 @@ import tech.reliab.course.vitokhinkaLab.bank.entity.User;
 import tech.reliab.course.vitokhinkaLab.bank.service.*;
 import tech.reliab.course.vitokhinkaLab.bank.service.impl.*;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
+        //Сервисы
         BankService bankService = BankServiceImpl.getInstance();
         BankOfficeServiceImpl officeService = BankOfficeServiceImpl.getInstance();
         EmployeeService employeeService = EmployeeServiceImpl.getInstance();
@@ -17,7 +20,8 @@ public class Main {
         UserService userService = UserServiceImpl.getInstance();
         PaymentAccountService paymentAccountService = PaymentAccountServiceImpl.getInstance();
         CreditAccountService creditAccountService = CreditAccountServiceImpl.getInstance();
-        ArrayList<Bank> bankList = new ArrayList<>();
+
+        List<Bank> bankList = new ArrayList<>();
 
         //Создание сущьностей
         for(int numBunk=0; numBunk<5; numBunk++){
@@ -79,11 +83,14 @@ public class Main {
             bankList.add(bank);
         }
 
-        User user = userService.create("Kirill", "Kekw", LocalDate.now(), "job");
 
-        bankService.getCredit(bankList, user);
-
-        userService.outputUserInfo(user);
+        try{
+            bankService.exportBankAccounts(bankList.get(2), "./test.txt");
+            bankService.importBankAccounts(bankList.get(3), "./test.txt");
+        }catch (IOException e){
+            System.out.println(e);
+        }
+        bankService.outputBankInfo(bankList.get(1));
 
     }
 }
